@@ -1,5 +1,12 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import Home from "../views/Home.vue";
+import Home from "../pages/Home.vue";
+
+// Auth
+import Login from "@/pages/Auth/Login.vue";
+
+// Admin
+import Index from "@/components/Index/Index.vue";
+import AdminDashboard from "@/pages/Admin/AdminDashboard/AdminDashboard.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -8,13 +15,24 @@ const routes: Array<RouteRecordRaw> = [
     component: Home,
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    path: "/jaksel/admin/login",
+    name: "Login",
+    component: Login,
+  },
+  {
+    path: "/admin",
+    component: Index,
+    children: [
+      {
+        path: "",
+        redirect: { name: "AdminDashboard" },
+      },
+      {
+        path: "dashboard",
+        name: "AdminDashboard",
+        component: AdminDashboard,
+      },
+    ],
   },
 ];
 
