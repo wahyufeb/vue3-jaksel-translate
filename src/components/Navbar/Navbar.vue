@@ -1,6 +1,10 @@
+<script setup lang="ts">
+import { getCurrentTheme } from "@/composables/useThemeSwitcher";
+import ThemeSwitcher from "@/components/ThemeSwitcher/ThemeSwitcher.vue";
+</script>
 <template>
   <div
-    class="flex justify-between py-4 px-8 bg-gray-900 shadow-md border-b text-white"
+    class="flex justify-between py-4 px-8 bg-secondary-light dark:bg-secondary-dark shadow-sm border-b text-white"
   >
     <div class="flex">
       <!-- <div class="mr-2">Icon</div> -->
@@ -11,12 +15,16 @@
         <span class="text-blue-500">S</span>
         <span class="text-red-500">E</span>
         <span class="text-purple-500">L</span>
-        <span class="ml-1">TRANSLATE</span>
+        <span class="ml-1 dark:text-primary-light text-primary-dark"
+          >TRANSLATE</span
+        >
       </div>
     </div>
     <div class="flex">
-      <div class="mr-2">Menu</div>
-      <div>About</div>
+      <ThemeSwitcher
+        :theme="getCurrentTheme"
+        class="ml-8 bg-primary-light dark:bg-ternary-dark px-3 py-2 shadow-sm rounded-xl cursor-pointer"
+      />
     </div>
   </div>
 </template>

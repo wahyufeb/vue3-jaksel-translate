@@ -1,9 +1,21 @@
+<script setup lang="ts">
+import { getCurrentTheme } from "@/composables/useThemeSwitcher";
+</script>
+
 <template>
-  <!-- <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </div> -->
-  <router-view />
+  <div :class="getCurrentTheme">
+    <router-view />
+  </div>
 </template>
 
-<style></style>
+<style>
+.fade-enter-active {
+  animation: coming 0.4s;
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
+.fade-leave-active {
+  animation: going 0.4s;
+}
+</style>
