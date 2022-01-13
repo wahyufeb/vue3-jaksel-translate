@@ -1,4 +1,4 @@
-export type IHeadersTable = {
+export type HeadersTable = {
   class?: string;
   title: string;
 };
