@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../pages/Home.vue";
+import ErrorPage from "@/pages/Error/ErrorPage/ErrorPage.vue";
 
 // Auth
 import Login from "@/pages/Auth/Login.vue";
@@ -33,6 +34,10 @@ const routes: Array<RouteRecordRaw> = [
         component: AdminDashboard,
       },
     ],
+  },
+  {
+    path: "/:catchAll(.*)",
+    component: ErrorPage,
   },
 ];
 
