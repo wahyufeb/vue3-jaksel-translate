@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { Iitem } from "@/types/item";
-import { IHeadersTable } from "@/types/table";
+import { Item } from "@/types/item";
+import { HeadersTable } from "@/types/table";
 import { defineProps, PropType } from "vue";
 const props = defineProps({
   items: {
     require: true,
-    type: Array as PropType<Iitem[]>,
+    type: Array as PropType<Item[]>,
   },
   headers: {
     require: true,
-    type: Array as PropType<IHeadersTable[]>,
+    type: Array as PropType<HeadersTable[]>,
   },
 });
 </script>

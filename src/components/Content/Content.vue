@@ -21,14 +21,14 @@ const handleSwitch = () => {
     <div
       class="xs:w-full md:w-8/12 bg-white dark:bg-secondary-dark rounded-md shadow-xl"
     >
-      <div class="flex justify-evenly py-2 mb-4 options">
+      <div
+        class="flex justify-evenly py-2 mb-4"
+        :class="getCurrentTheme === 'dark' ? 'options-dark' : 'options'"
+      >
         <div class="uppercase text-primary-dark dark:text-primary-light">
           {{ from }}
         </div>
-        <button
-          class="hover:bg-gray-100 rounded-full p-1"
-          @click="handleSwitch"
-        >
+        <button class="rounded-full p-1" @click="handleSwitch">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="h-6 w-6"
@@ -48,16 +48,18 @@ const handleSwitch = () => {
           {{ to }}
         </div>
       </div>
-      <div class="p-4 flex xs:flex-col md:flex-row justify-between gap-10">
+      <div
+        class="py-4 px-6 flex xs:flex-col md:flex-row justify-between gap-10"
+      >
         <textarea
           rows="5"
-          class="xs:w-full md:w-6/12 dark:bg-ternary-dark dark:text-ternary-light bg-ternary-light text-ternary-dark p-2 rounded-md text-2xl resize-none"
+          class="xs:w-full md:w-6/12 dark:bg-ternary-dark dark:text-ternary-light bg-ternary-light text-ternary-dark p-2 rounded-md text-2xl resize-none mb-2"
           v-model="fromInput"
         >
         </textarea>
         <textarea
           rows="5"
-          class="xs:w-full md:w-6/12 dark:bg-ternary-dark dark:text-ternary-light bg-ternary-light text-ternary-dark p-2 rounded-md text-2xl resize-none"
+          class="xs:w-full md:w-6/12 dark:bg-ternary-dark dark:text-ternary-light bg-ternary-light text-ternary-dark p-2 rounded-md text-2xl resize-none mb-2"
           :class="disabled ? 'bg-ternary-light' : ''"
           v-model="toInput"
           :disabled="disabled"
@@ -69,6 +71,10 @@ const handleSwitch = () => {
 </template>
 
 <style scoped>
+.options-dark {
+  border-bottom: 0.5px solid rgba(255, 255, 255, 0.6);
+}
+
 .options {
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.3);
 }

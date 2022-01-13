@@ -4,8 +4,8 @@ import { getCurrentTheme } from "@/composables/useThemeSwitcher";
 import AdminTable from "../AdminTable/AdminTable.vue";
 import WrapperModal from "../WrapperModal.vue";
 import { defineProps, reactive } from "vue";
-import { Iitem } from "@/types/item";
-import { IHeadersTable } from "@/types/table";
+import { Item } from "@/types/item";
+import { HeadersTable } from "@/types/table";
 
 const props = defineProps({
   isMenu: {
@@ -14,7 +14,7 @@ const props = defineProps({
   },
 });
 
-const items = reactive<Iitem[]>([
+const items = reactive<Item[]>([
   {
     id: 1,
     bahasa_jaksel: "A",
@@ -42,7 +42,7 @@ const items = reactive<Iitem[]>([
   },
 ]);
 
-const headers = reactive<IHeadersTable[]>([
+const headers = reactive<HeadersTable[]>([
   {
     title: "No",
     class: "",

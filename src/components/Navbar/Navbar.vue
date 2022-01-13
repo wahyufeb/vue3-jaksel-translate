@@ -4,10 +4,9 @@ import ThemeSwitcher from "@/components/ThemeSwitcher/ThemeSwitcher.vue";
 </script>
 <template>
   <div
-    class="flex justify-between py-4 px-8 bg-secondary-light dark:bg-secondary-dark shadow-sm border-b text-white"
+    class="flex justify-between items-center py-4 px-8 bg-secondary-light dark:bg-secondary-dark shadow-sm border-b text-white"
   >
     <div class="flex">
-      <!-- <div class="mr-2">Icon</div> -->
       <div class="font-bold">
         <span class="text-yellow-500">J</span>
         <span class="text-yellow-600">A</span>

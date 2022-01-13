@@ -1,6 +1,4 @@
-<script setup lang="ts">
-import { getCurrentTheme } from "@/composables/useThemeSwitcher";
-</script>
+<script setup lang="ts"></script>
 <template>
   <div
     class="w-screen h-screen flex justify-center items-center bg-primary-light dark:bg-primary-dark"
