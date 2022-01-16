@@ -44,7 +44,7 @@ const translating = async (): Promise<void> => {
     payload: from.value,
   };
   toInput.value = await dictionary.translatingProcess(payloadData);
-  recomendations.list = dictionary.recomendation();
+  recomendations.list = dictionary.getRecomendation();
 };
 
 watch(
