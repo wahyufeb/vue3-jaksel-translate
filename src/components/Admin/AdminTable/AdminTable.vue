@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import { Item } from "@/types/item";
+import { IDictionary } from "@/types/dictionary";
 import { HeadersTable } from "@/types/table";
 import { defineProps, PropType } from "vue";
+import DictionaryModal from "../AdminModals/DictionaryModal.vue";
 const props = defineProps({
   items: {
-    require: true,
-    type: Array as PropType<Item[]>,
+    required: true,
+    type: Array as PropType<IDictionary[]>,
   },
   headers: {
-    require: true,
+    required: true,
     type: Array as PropType<HeadersTable[]>,
   },
 });
 </script>
 
 <template>
+  <DictionaryModal />
   <table class="table-auto w-full my-4">
     <thead class="text-xs font-semibold uppercase text-gray-400">
       <tr>
@@ -35,13 +37,11 @@ const props = defineProps({
         </td>
         <td class="w-4/12 p-2 whitespace-nowrap">
           <div class="flex items-center">
-            <div class="font-medium text-gray-800">
-              {{ item.bahasa_jaksel }}
-            </div>
+            {{ item.jaksel }}
           </div>
         </td>
         <td class="w-4/12 p-2 whitespace-nowrap">
-          <div class="text-left">{{ item.arti }}</div>
+          <div class="text-left">{{ item.artinya }}</div>
         </td>
         <td class="w-2/12 p-2 whitespace-nowrap">
           <div class="text-left flex">

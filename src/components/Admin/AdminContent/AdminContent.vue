@@ -1,44 +1,50 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import ThemeSwitcher from "@/components/ThemeSwitcher/ThemeSwitcher.vue";
 import { getCurrentTheme } from "@/composables/useThemeSwitcher";
 import AdminTable from "../AdminTable/AdminTable.vue";
-import WrapperModal from "../WrapperModal.vue";
 import { defineProps, reactive } from "vue";
-import { Item } from "@/types/item";
 import { HeadersTable } from "@/types/table";
+import { useDictionary } from "@/composables/useDictionary";
+import { IDictionary } from "@/types/dictionary";
+
+const dictionary = useDictionary();
+onMounted(async () => {
+  await dictionary.loadDictionaries();
+});
 
 const props = defineProps({
   isMenu: {
-    require: true,
+    required: true,
     type: Boolean,
   },
 });
 
-const items = reactive<Item[]>([
+const items = reactive<IDictionary[]>([
   {
-    id: 1,
-    bahasa_jaksel: "A",
-    arti: "A",
+    _id: "1",
+    jaksel: "A",
+    artinya: "A",
   },
   {
-    id: 2,
-    bahasa_jaksel: "B",
-    arti: "B",
+    _id: "2",
+    jaksel: "B",
+    artinya: "B",
   },
   {
-    id: 3,
-    bahasa_jaksel: "C",
-    arti: "C",
+    _id: "3",
+    jaksel: "C",
+    artinya: "C",
   },
   {
-    id: 4,
-    bahasa_jaksel: "D",
-    arti: "D",
+    _id: "4",
+    jaksel: "D",
+    artinya: "D",
   },
   {
-    id: 5,
-    bahasa_jaksel: "E",
-    arti: "E",
+    _id: "5",
+    jaksel: "E",
+    artinya: "E",
   },
 ]);
 
@@ -80,7 +86,10 @@ const headers = reactive<HeadersTable[]>([
       />
       <ThemeSwitcher :theme="getCurrentTheme" />
     </div>
-    <AdminTable :items="items" :headers="headers" />
-    <WrapperModal />
+    <AdminTable
+      v-if="dictionary.getDictionaries.length > 0"
+      :items="dictionary.getDictionaries"
+      :headers="headers"
+    />
   </div>
 </template>

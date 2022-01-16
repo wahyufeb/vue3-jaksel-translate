@@ -1,11 +1,25 @@
 <script setup lang="ts">
+import Cookies from "js-cookie";
+import Toast from "@/components/Toast/Toast.vue";
 import { defineProps, reactive } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
+const route = useRoute();
+const router = useRouter();
 const props = defineProps({
   isMenu: {
-    require: true,
+    required: true,
     type: Boolean,
   },
+});
+
+const toast = reactive<{
+  show: boolean;
+  type: string;
+  msg: string;
+}>({
+  show: false,
+  type: "",
+  msg: "",
 });
 
 interface IlistMenu {
@@ -20,10 +34,29 @@ const listMenu = reactive<IlistMenu[]>([
   },
 ]);
 
-const route = useRoute();
+const logout = () => {
+  Cookies.remove("token");
+  if (!Cookies.get("token")) {
+    toast.type = "success";
+    toast.msg = "Sukses Logout";
+  } else {
+    toast.type = "error";
+    toast.msg = "Gagal Logout";
+  }
+  toast.show = true;
+  setTimeout(() => {
+    window.location.reload();
+  }, 1000);
+};
 </script>
 
 <template>
+  <Toast
+    :msg="toast.msg"
+    :type="toast.type"
+    :show="toast.show"
+    @on-finished="toast.show = false"
+  />
   <div
     class="xs:absolute md:static h-screen bg-blue-900 dark:bg-primary-dark text-secondary-dark dark:text-secondary-light transition-all duration-500 ease-in-out transform"
     :class="
@@ -63,7 +96,7 @@ const route = useRoute();
           {{ item.text }}
         </router-link>
       </li>
-      <li class="cursor-pointer">Logout</li>
+      <li class="cursor-pointer" @click="logout">Logout</li>
     </ul>
   </div>
 </template>
