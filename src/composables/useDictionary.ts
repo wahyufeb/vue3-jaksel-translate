@@ -1,19 +1,21 @@
-import { translatingAPI } from "@/services/dictionary";
+import { translatingAPI, loadDictionariesAPI } from "@/services/dictionary";
 import { ITranslatingPayload } from "@/types/payload";
 import { IResponseTranslating } from "@/types/response";
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
+import { IDictionary } from "@/types/dictionary";
+import { IResponseDictionaries } from "@/types/response";
 
 interface IUseDictionary {
-  recomendation: () => Array<string>;
+  getRecomendation: () => Array<string>;
+  getDictionaries: Array<IDictionary>;
   translatingProcess: (payload: ITranslatingPayload) => Promise<string>;
+  loadDictionaries: () => Promise<void>;
 }
 
-let translatingRecomendation = reactive<Array<string>>([]);
-
 export const useDictionary = (): IUseDictionary => {
-  const recomendation = () => {
-    return translatingRecomendation;
-  };
+  let translatingRecomendation = reactive<Array<string>>([]);
+  let dictionaries = reactive<Array<IDictionary>>([]);
+
   const translatingProcess = async (
     payloadData: ITranslatingPayload
   ): Promise<string> => {
@@ -40,8 +42,25 @@ export const useDictionary = (): IUseDictionary => {
     }
   };
 
+  const loadDictionaries = async (): Promise<void> => {
+    try {
+      const reqTranslating = await loadDictionariesAPI();
+      const { data }: IResponseDictionaries = await reqTranslating.data;
+
+      if (data !== null) {
+        data.forEach((item) => {
+          dictionaries.push(item);
+        });
+      }
+    } catch (error) {
+      dictionaries = [];
+    }
+  };
+
   return {
-    recomendation,
+    getRecomendation: () => translatingRecomendation,
+    getDictionaries: dictionaries,
+    loadDictionaries,
     translatingProcess,
   };
 };
