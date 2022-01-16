@@ -10,3 +10,7 @@ export const translatingAPI = ({
     params,
   });
 };
+
+export const loadDictionariesAPI = (): Promise<AxiosResponse> => {
+  return AxiosInstance.get(`dictionary/`);
+};
