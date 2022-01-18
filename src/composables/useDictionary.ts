@@ -1,15 +1,34 @@
-import { translatingAPI, loadDictionariesAPI } from "@/services/dictionary";
-import { ITranslatingPayload } from "@/types/payload";
-import { IResponseTranslating } from "@/types/response";
 import { reactive, ref } from "vue";
+import {
+  translatingAPI,
+  loadDictionariesAPI,
+  addDictionaryAPI,
+  deleteDictionaryAPI,
+  updateDictionaryAPI,
+} from "@/services/dictionary";
+import {
+  ITranslatingPayload,
+  IAddDictionaryPayload,
+  IDeleteDictionaryPayload,
+} from "@/types/payload";
+import {
+  IResponseTranslating,
+  IResponseDictionaries,
+  IResponseAddDictionary,
+  IResponseStatus,
+  IResponseDeleteDictionary,
+} from "@/types/response";
 import { IDictionary } from "@/types/dictionary";
-import { IResponseDictionaries } from "@/types/response";
 
 interface IUseDictionary {
   getRecomendation: () => Array<string>;
-  getDictionaries: Array<IDictionary>;
+  getDictionaries: () => Array<IDictionary>;
   translatingProcess: (payload: ITranslatingPayload) => Promise<string>;
   loadDictionaries: () => Promise<void>;
+  addDictionary: (payload: IDictionary) => Promise<IResponseStatus>;
+  deleteDictionary: (
+    payload: IDeleteDictionaryPayload
+  ) => Promise<IResponseStatus>;
 }
 
 export const useDictionary = (): IUseDictionary => {
@@ -57,10 +76,67 @@ export const useDictionary = (): IUseDictionary => {
     }
   };
 
+  const addDictionary = async (
+    payload: IAddDictionaryPayload
+  ): Promise<IResponseStatus> => {
+    try {
+      const reqAddDictionary = await addDictionaryAPI(payload);
+      const { code, message, data }: IResponseAddDictionary =
+        await reqAddDictionary.data;
+      if (code !== 201) {
+        return {
+          status: false,
+          message,
+        };
+      }
+
+      return {
+        status: true,
+        message,
+      };
+    } catch (error: any) {
+      const { data } = error.response;
+      return {
+        status: false,
+        message: Array.isArray(data.errors)
+          ? data.errors.map((item: any) => item.msg).join(", ")
+          : data.message,
+      };
+    }
+  };
+
+  const deleteDictionary = async (
+    payload: IDeleteDictionaryPayload
+  ): Promise<IResponseStatus> => {
+    try {
+      const reqDeleteDictionary = await deleteDictionaryAPI(payload);
+      const { code, message }: IResponseDeleteDictionary =
+        await reqDeleteDictionary.data;
+      if (code !== 200) {
+        return {
+          status: false,
+          message,
+        };
+      }
+
+      return {
+        status: true,
+        message,
+      };
+    } catch (error: any) {
+      return {
+        status: false,
+        message: error.message,
+      };
+    }
+  };
+
   return {
     getRecomendation: () => translatingRecomendation,
-    getDictionaries: dictionaries,
-    loadDictionaries,
+    getDictionaries: () => dictionaries,
     translatingProcess,
+    loadDictionaries,
+    addDictionary,
+    deleteDictionary,
   };
 };

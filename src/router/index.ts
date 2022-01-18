@@ -83,6 +83,9 @@ router.beforeEach(async (to, from, next) => {
       const { status } = await auth.myProfile();
       if (status) {
         next();
+      } else {
+        Cookies.remove("token");
+        window.location.reload();
       }
     }
   } else {
