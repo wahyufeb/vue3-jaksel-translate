@@ -20,3 +20,9 @@ export type IResponseTranslating = StandardResponse<{
 }>;
 
 export type IResponseDictionaries = StandardResponse<Array<IDictionary>>;
+
+export type IResponseAddDictionary = StandardResponse<IDictionary>;
+
+export type IResponseDeleteDictionary = StandardResponse<{
+  deleteCount: number;
+}>;

@@ -1,5 +1,5 @@
 export interface IDictionary {
-  _id: string;
+  _id?: string;
   jaksel: string;
   artinya: string;
 }
