@@ -8,9 +8,9 @@ import { HeadersTable } from "@/types/table";
 import { useDictionary } from "@/composables/useDictionary";
 import { IDictionary } from "@/types/dictionary";
 
-const dictionary = useDictionary();
+const { loadDictionaries, getDictionaries } = useDictionary();
 onMounted(async () => {
-  await dictionary.loadDictionaries();
+  await loadDictionaries();
 });
 
 const props = defineProps({
@@ -87,8 +87,8 @@ const headers = reactive<HeadersTable[]>([
       <ThemeSwitcher :theme="getCurrentTheme" />
     </div>
     <AdminTable
-      v-if="dictionary.getDictionaries.length > 0"
-      :items="dictionary.getDictionaries"
+      v-if="getDictionaries().length > 0"
+      :items="getDictionaries()"
       :headers="headers"
     />
   </div>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineProps, defineEmits, PropType } from "vue";
+import Loader from "../Loader/Loader.vue";
 defineEmits(["onCanceled", "onClosed", "onConfirmed"]);
 const props = defineProps({
   show: {
@@ -14,6 +15,10 @@ const props = defineProps({
     type: String as PropType<string>,
     required: false,
     default: "Confirm",
+  },
+  isLoading: {
+    type: Boolean as PropType<boolean>,
+    required: true,
   },
 });
 </script>
@@ -62,9 +67,10 @@ const props = defineProps({
             Cancel
           </button>
           <button
-            class="focus:outline-none px-4 bg-blue-900 dark:bg-primary-dark p-3 ml-3 rounded-lg text-secondary-light hover:bg-teal-400"
+            class="focus:outline-none px-4 bg-purple-700 p-3 ml-3 rounded-lg text-secondary-light hover:bg-teal-400 flex justify-center items-center"
             @click="$emit('onConfirmed')"
           >
+            <Loader v-if="isLoading" />
             {{ textSubmit }}
           </button>
         </div>

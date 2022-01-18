@@ -1,8 +1,14 @@
 <script setup lang="ts">
+import { useDictionary } from "@/composables/useDictionary";
 import { IDictionary } from "@/types/dictionary";
+import { IDeleteDictionaryPayload } from "@/types/payload";
+import { IResponseStatus } from "@/types/response";
 import { HeadersTable } from "@/types/table";
-import { defineProps, PropType } from "vue";
+import { defineProps, PropType, reactive } from "vue";
 import DictionaryModal from "../AdminModals/DictionaryModal.vue";
+import Toast from "@/components/Toast/Toast.vue";
+
+const { deleteDictionary } = useDictionary();
 const props = defineProps({
   items: {
     required: true,
@@ -13,9 +19,41 @@ const props = defineProps({
     type: Array as PropType<HeadersTable[]>,
   },
 });
+
+const toast = reactive<{
+  show: boolean;
+  type: string;
+  msg: string;
+}>({
+  show: false,
+  type: "",
+  msg: "",
+});
+
+const handleDelete = async (item: IDictionary) => {
+  const payloadData: IDeleteDictionaryPayload = {
+    params: {
+      _id: item._id as string,
+    },
+  };
+
+  const { status, message }: IResponseStatus = await deleteDictionary(
+    payloadData
+  );
+
+  toast.type = status ? "success" : "error";
+  toast.msg = message;
+  toast.show = true;
+};
 </script>
 
 <template>
+  <Toast
+    :msg="toast.msg"
+    :type="toast.type"
+    :show="toast.show"
+    @on-finished="toast.show = false"
+  />
   <DictionaryModal />
   <table class="table-auto w-full my-4">
     <thead class="text-xs font-semibold uppercase text-gray-400">
@@ -47,7 +85,7 @@ const props = defineProps({
           <div class="text-left flex">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 cursor-pointer p-1 hover:bg-blue-50 rounded-full mr-4"
+              class="h-6 w-6 cursor-pointer p-1 hover:bg-blue-50 dark:hover:bg-purple-700 rounded-full mr-4"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -60,8 +98,9 @@ const props = defineProps({
               />
             </svg>
             <svg
+              @click="handleDelete(item)"
               xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6 cursor-pointer p-1 hover:bg-red-50 rounded-full"
+              class="h-6 w-6 cursor-pointer p-1 hover:bg-red-50 dark:hover:bg-purple-700 rounded-full"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
