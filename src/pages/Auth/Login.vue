@@ -38,9 +38,9 @@ const handleLogin = async (): Promise<void> => {
   toast.msg = message;
   toast.show = true;
 
+  loading.value = false;
   setTimeout(() => {
     if (status) {
-      loading.value = false;
       router.push({ name: "AdminDashboard" });
     }
   }, 1000);
@@ -72,7 +72,7 @@ const handleLogin = async (): Promise<void> => {
           v-model="email"
         />
         <input
-          type="text"
+          type="password"
           class="w-full my-2 h-12 border-2 rounded-md pl-2 mb-4"
           placeholder="password"
           v-model="password"
