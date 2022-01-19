@@ -1,10 +1,22 @@
+<script setup lang="ts">
+import { defineProps } from "vue";
+const props = defineProps({
+  color: {
+    type: String,
+    required: false,
+    default: "white",
+  },
+});
+</script>
 <template>
-  <div class="w-6 h-6 loader"></div>
+  <div
+    class="w-6 h-6 loader border-2 border-white"
+    :class="`border-${props.color}-500`"
+  ></div>
 </template>
 
 <style scoped>
 .loader {
-  border: 2px solid #fff;
   border-bottom-color: transparent;
   border-radius: 50%;
   display: inline-block;
