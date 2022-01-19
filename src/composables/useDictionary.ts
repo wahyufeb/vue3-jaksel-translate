@@ -1,4 +1,4 @@
-import { reactive, ref } from "vue";
+import { reactive, ref, Ref } from "vue";
 import {
   translatingAPI,
   loadDictionariesAPI,
@@ -10,6 +10,7 @@ import {
   ITranslatingPayload,
   IAddDictionaryPayload,
   IDeleteDictionaryPayload,
+  IUpdateDictionaryPayload,
 } from "@/types/payload";
 import {
   IResponseTranslating,
@@ -17,23 +18,29 @@ import {
   IResponseAddDictionary,
   IResponseStatus,
   IResponseDeleteDictionary,
+  IResponseUpdateDictionary,
 } from "@/types/response";
 import { IDictionary } from "@/types/dictionary";
 
 interface IUseDictionary {
-  getRecomendation: () => Array<string>;
   getDictionaries: () => Array<IDictionary>;
+  getRecomendation: () => Array<string>;
   translatingProcess: (payload: ITranslatingPayload) => Promise<string>;
   loadDictionaries: () => Promise<void>;
   addDictionary: (payload: IDictionary) => Promise<IResponseStatus>;
   deleteDictionary: (
     payload: IDeleteDictionaryPayload
   ) => Promise<IResponseStatus>;
+  updateDictionary: (
+    payload: IUpdateDictionaryPayload
+  ) => Promise<IResponseStatus>;
+  getLoading: () => boolean;
 }
 
+let dictionaries = reactive<Array<IDictionary>>([]);
+const loading = ref<boolean>(false);
 export const useDictionary = (): IUseDictionary => {
   let translatingRecomendation = reactive<Array<string>>([]);
-  let dictionaries = reactive<Array<IDictionary>>([]);
 
   const translatingProcess = async (
     payloadData: ITranslatingPayload
@@ -90,6 +97,10 @@ export const useDictionary = (): IUseDictionary => {
         };
       }
 
+      if (data) {
+        dictionaries.push(data);
+      }
+
       return {
         status: true,
         message,
@@ -109,21 +120,30 @@ export const useDictionary = (): IUseDictionary => {
     payload: IDeleteDictionaryPayload
   ): Promise<IResponseStatus> => {
     try {
+      loading.value = true;
       const reqDeleteDictionary = await deleteDictionaryAPI(payload);
       const { code, message }: IResponseDeleteDictionary =
         await reqDeleteDictionary.data;
       if (code !== 200) {
+        loading.value = false;
         return {
           status: false,
           message,
         };
       }
+      dictionaries = dictionaries.filter(
+        (item) => item._id !== payload.params._id
+      );
 
+      setTimeout(() => {
+        loading.value = false;
+      }, 1000);
       return {
         status: true,
         message,
       };
     } catch (error: any) {
+      loading.value = false;
       return {
         status: false,
         message: error.message,
@@ -131,12 +151,48 @@ export const useDictionary = (): IUseDictionary => {
     }
   };
 
+  const updateDictionary = async (
+    payload: IUpdateDictionaryPayload
+  ): Promise<IResponseStatus> => {
+    try {
+      const reqUpdateDictionary = await updateDictionaryAPI(payload);
+      const { code, message, data }: IResponseUpdateDictionary =
+        await reqUpdateDictionary.data;
+      if (code !== 200) {
+        return {
+          status: false,
+          message,
+        };
+      }
+
+      if (data) {
+        const indexData = dictionaries.findIndex((dic) => dic._id === data._id);
+        dictionaries[indexData] = data;
+      }
+
+      return {
+        status: true,
+        message,
+      };
+    } catch (error: any) {
+      const { data } = error.response;
+      return {
+        status: false,
+        message: Array.isArray(data.errors)
+          ? data.errors.map((item: any) => item.msg).join(", ")
+          : data.message,
+      };
+    }
+  };
+
   return {
-    getRecomendation: () => translatingRecomendation,
     getDictionaries: () => dictionaries,
+    getRecomendation: () => translatingRecomendation,
     translatingProcess,
     loadDictionaries,
     addDictionary,
     deleteDictionary,
+    updateDictionary,
+    getLoading: (): boolean => loading.value,
   };
 };

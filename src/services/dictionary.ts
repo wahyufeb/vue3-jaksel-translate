@@ -1,6 +1,10 @@
 import AxiosInstance from "@/utils/axios";
 import { AxiosResponse } from "axios";
-import { IDeleteDictionaryPayload, ITranslatingPayload } from "@/types/payload";
+import {
+  IDeleteDictionaryPayload,
+  ITranslatingPayload,
+  IUpdateDictionaryPayload,
+} from "@/types/payload";
 import { IDictionary } from "@/types/dictionary";
 
 export const translatingAPI = ({
@@ -23,9 +27,9 @@ export const addDictionaryAPI = (
 };
 
 export const updateDictionaryAPI = (
-  payload: IDictionary
+  payload: IUpdateDictionaryPayload
 ): Promise<AxiosResponse> => {
-  return AxiosInstance.put(`dictionary/${payload._id}`);
+  return AxiosInstance.put(`dictionary/${payload.params._id}`, payload.payload);
 };
 
 export const deleteDictionaryAPI = (
