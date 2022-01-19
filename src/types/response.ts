@@ -26,3 +26,5 @@ export type IResponseAddDictionary = StandardResponse<IDictionary>;
 export type IResponseDeleteDictionary = StandardResponse<{
   deleteCount: number;
 }>;
+
+export type IResponseUpdateDictionary = IResponseAddDictionary;
