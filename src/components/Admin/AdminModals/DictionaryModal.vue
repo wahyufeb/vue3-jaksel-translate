@@ -1,12 +1,23 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, defineProps, defineEmits, PropType } from "vue";
 import Modal from "@/components/Modal/Modal.vue";
 import { useDictionary } from "@/composables/useDictionary";
-import { IAddDictionaryPayload } from "@/types/payload";
+import {
+  IAddDictionaryPayload,
+  IUpdateDictionaryPayload,
+} from "@/types/payload";
 import { IResponseStatus } from "@/types/response";
 import Toast from "@/components/Toast/Toast.vue";
 
-const show = ref<boolean>(false);
+const props = defineProps({
+  show: {
+    required: true,
+    type: Boolean as PropType<boolean>,
+  },
+});
+
+const emits = defineEmits(["onShowChange"]);
+
 const isLoading = ref<boolean>(false);
 const toast = reactive<{
   show: boolean;
@@ -17,13 +28,29 @@ const toast = reactive<{
   type: "",
   msg: "",
 });
+
+const _id = ref<string>("");
 const jaksel = ref<string>("");
 const arti = ref<string>("");
 
-const { addDictionary } = useDictionary();
+const { addDictionary, updateDictionary } = useDictionary();
 
-const handleAddDictionary = async () => {
+const handleDictionary = async () => {
   isLoading.value = true;
+  const { status, message }: IResponseStatus =
+    _id.value !== "" ? await handleUpdateProcess() : await handeAddProcess();
+
+  toast.type = status ? "success" : "error";
+  toast.msg = message;
+  toast.show = true;
+
+  setTimeout(() => {
+    emits("onShowChange", false);
+    isLoading.value = false;
+  }, 1000);
+};
+
+const handeAddProcess = async () => {
   const payloadData: IAddDictionaryPayload = {
     jaksel: jaksel.value,
     artinya: arti.value,
@@ -31,14 +58,31 @@ const handleAddDictionary = async () => {
 
   const { status, message }: IResponseStatus = await addDictionary(payloadData);
 
-  toast.type = status ? "success" : "error";
-  toast.msg = message;
-  toast.show = true;
+  return {
+    status,
+    message,
+  };
+};
 
-  setTimeout(() => {
-    isLoading.value = false;
-    show.value = false;
-  }, 1000);
+const handleUpdateProcess = async () => {
+  const payloadData: IUpdateDictionaryPayload = {
+    params: {
+      _id: _id.value,
+    },
+    payload: {
+      jaksel: jaksel.value,
+      artinya: arti.value,
+    },
+  };
+
+  const { status, message }: IResponseStatus = await updateDictionary(
+    payloadData
+  );
+
+  return {
+    status,
+    message,
+  };
 };
 </script>
 
@@ -50,13 +94,13 @@ const handleAddDictionary = async () => {
     @on-finished="toast.show = false"
   />
   <Modal
-    :show="show"
+    :show="props.show"
     title="Tambah kosa kata"
     :is-loading="isLoading"
-    text-submit="Tambahkan"
-    @on-closed="show = false"
-    @on-canceled="show = false"
-    @on-confirmed="handleAddDictionary"
+    :text-submit="_id !== '' ? 'Perbaharui' : 'Tambahkan'"
+    @on-closed="$emit('onShowChange', false)"
+    @on-canceled="$emit('onShowChange', false)"
+    @on-confirmed="handleDictionary"
   >
     <template #default>
       <input
@@ -73,12 +117,4 @@ const handleAddDictionary = async () => {
       />
     </template>
   </Modal>
-  <div class="flex justify-end items-center">
-    <button
-      class="my-4 py-2 px-4 bg-purple-700 rounded-md text-base text-white"
-      @click="show = true"
-    >
-      Tambah kosa kata
-    </button>
-  </div>
 </template>

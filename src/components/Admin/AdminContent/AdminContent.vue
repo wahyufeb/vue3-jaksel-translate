@@ -7,8 +7,9 @@ import { defineProps, reactive } from "vue";
 import { HeadersTable } from "@/types/table";
 import { useDictionary } from "@/composables/useDictionary";
 import { IDictionary } from "@/types/dictionary";
+import Loader from "@/components/Loader/Loader.vue";
 
-const { loadDictionaries, getDictionaries } = useDictionary();
+const { loadDictionaries, getLoading, getDictionaries } = useDictionary();
 onMounted(async () => {
   await loadDictionaries();
 });
@@ -19,34 +20,6 @@ const props = defineProps({
     type: Boolean,
   },
 });
-
-const items = reactive<IDictionary[]>([
-  {
-    _id: "1",
-    jaksel: "A",
-    artinya: "A",
-  },
-  {
-    _id: "2",
-    jaksel: "B",
-    artinya: "B",
-  },
-  {
-    _id: "3",
-    jaksel: "C",
-    artinya: "C",
-  },
-  {
-    _id: "4",
-    jaksel: "D",
-    artinya: "D",
-  },
-  {
-    _id: "5",
-    jaksel: "E",
-    artinya: "E",
-  },
-]);
 
 const headers = reactive<HeadersTable[]>([
   {
@@ -87,9 +60,12 @@ const headers = reactive<HeadersTable[]>([
       <ThemeSwitcher :theme="getCurrentTheme" />
     </div>
     <AdminTable
-      v-if="getDictionaries().length > 0"
+      v-if="!getLoading()"
       :items="getDictionaries()"
       :headers="headers"
     />
+    <div v-else class="flex items-center justify-center mt-20">
+      <Loader color="purple" />
+    </div>
   </div>
 </template>

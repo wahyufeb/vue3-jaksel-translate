@@ -1,14 +1,20 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useDictionary } from "@/composables/useDictionary";
 import { IDictionary } from "@/types/dictionary";
-import { IDeleteDictionaryPayload } from "@/types/payload";
+import {
+  IDeleteDictionaryPayload,
+  IUpdateDictionaryPayload,
+} from "@/types/payload";
 import { IResponseStatus } from "@/types/response";
 import { HeadersTable } from "@/types/table";
 import { defineProps, PropType, reactive } from "vue";
 import DictionaryModal from "../AdminModals/DictionaryModal.vue";
 import Toast from "@/components/Toast/Toast.vue";
 
-const { deleteDictionary } = useDictionary();
+const show = ref<boolean>(false);
+const dictionaryModalRef = ref<InstanceType<typeof DictionaryModal | any>>();
+const { deleteDictionary, updateDictionary } = useDictionary();
 const props = defineProps({
   items: {
     required: true,
@@ -29,6 +35,20 @@ const toast = reactive<{
   type: "",
   msg: "",
 });
+
+const handleModalAdd = () => {
+  show.value = true;
+  dictionaryModalRef.value.$.setupState._id = "";
+  dictionaryModalRef.value.$.setupState.jaksel = "";
+  dictionaryModalRef.value.$.setupState.arti = "";
+};
+
+const handleModalEdit = (item: IDictionary) => {
+  show.value = true;
+  dictionaryModalRef.value.$.setupState._id = item._id;
+  dictionaryModalRef.value.$.setupState.jaksel = item.jaksel;
+  dictionaryModalRef.value.$.setupState.arti = item.artinya;
+};
 
 const handleDelete = async (item: IDictionary) => {
   const payloadData: IDeleteDictionaryPayload = {
@@ -54,7 +74,19 @@ const handleDelete = async (item: IDictionary) => {
     :show="toast.show"
     @on-finished="toast.show = false"
   />
-  <DictionaryModal />
+  <DictionaryModal
+    ref="dictionaryModalRef"
+    :show="show"
+    @on-show-change="(val) => (show = val)"
+  />
+  <div class="flex justify-end items-center">
+    <button
+      class="my-4 py-2 px-4 bg-purple-700 rounded-md text-base text-white"
+      @click="handleModalAdd"
+    >
+      Tambah kosa kata
+    </button>
+  </div>
   <table class="table-auto w-full my-4">
     <thead class="text-xs font-semibold uppercase text-gray-400">
       <tr>
@@ -84,6 +116,7 @@ const handleDelete = async (item: IDictionary) => {
         <td class="w-2/12 p-2 whitespace-nowrap">
           <div class="text-left flex">
             <svg
+              @click="handleModalEdit(item)"
               xmlns="http://www.w3.org/2000/svg"
               class="h-6 w-6 cursor-pointer p-1 hover:bg-blue-50 dark:hover:bg-purple-700 rounded-full mr-4"
               fill="none"
