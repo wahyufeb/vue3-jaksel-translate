@@ -18,6 +18,7 @@ const props = defineProps({
 
 const emits = defineEmits(["onShowChange"]);
 
+const modalTitle = ref<string>("");
 const isLoading = ref<boolean>(false);
 const toast = reactive<{
   show: boolean;
@@ -45,7 +46,9 @@ const handleDictionary = async () => {
   toast.show = true;
 
   setTimeout(() => {
-    emits("onShowChange", false);
+    if (status) {
+      emits("onShowChange", false);
+    }
     isLoading.value = false;
   }, 1000);
 };
@@ -95,7 +98,7 @@ const handleUpdateProcess = async () => {
   />
   <Modal
     :show="props.show"
-    title="Tambah kosa kata"
+    :title="modalTitle"
     :is-loading="isLoading"
     :text-submit="_id !== '' ? 'Perbaharui' : 'Tambahkan'"
     @on-closed="$emit('onShowChange', false)"
