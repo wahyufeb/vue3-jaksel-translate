@@ -41,6 +41,7 @@ const handleModalAdd = () => {
   dictionaryModalRef.value.$.setupState._id = "";
   dictionaryModalRef.value.$.setupState.jaksel = "";
   dictionaryModalRef.value.$.setupState.arti = "";
+  dictionaryModalRef.value.$.setupState.modalTitle = "Tambah kosa kata";
 };
 
 const handleModalEdit = (item: IDictionary) => {
@@ -48,6 +49,7 @@ const handleModalEdit = (item: IDictionary) => {
   dictionaryModalRef.value.$.setupState._id = item._id;
   dictionaryModalRef.value.$.setupState.jaksel = item.jaksel;
   dictionaryModalRef.value.$.setupState.arti = item.artinya;
+  dictionaryModalRef.value.$.setupState.modalTitle = "Update kosa kata";
 };
 
 const handleDelete = async (item: IDictionary) => {
