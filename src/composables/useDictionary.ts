@@ -120,30 +120,24 @@ export const useDictionary = (): IUseDictionary => {
     payload: IDeleteDictionaryPayload
   ): Promise<IResponseStatus> => {
     try {
-      loading.value = true;
       const reqDeleteDictionary = await deleteDictionaryAPI(payload);
       const { code, message }: IResponseDeleteDictionary =
         await reqDeleteDictionary.data;
       if (code !== 200) {
-        loading.value = false;
         return {
           status: false,
           message,
         };
       }
-      dictionaries = dictionaries.filter(
-        (item) => item._id !== payload.params._id
+      const index = dictionaries.findIndex(
+        (dic) => dic._id === payload.params._id
       );
-
-      setTimeout(() => {
-        loading.value = false;
-      }, 1000);
+      dictionaries.splice(index, 1);
       return {
         status: true,
         message,
       };
     } catch (error: any) {
-      loading.value = false;
       return {
         status: false,
         message: error.message,
