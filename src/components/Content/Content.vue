@@ -60,7 +60,7 @@ watch(
     >
       <div
         class="flex justify-evenly py-2 mb-4"
-        :class="getCurrentTheme === 'dark' ? 'options-dark' : 'options'"
+        :class="getCurrentTheme() === 'dark' ? 'options-dark' : 'options'"
       >
         <div class="uppercase text-primary-dark dark:text-primary-light">
           {{ from }}
@@ -71,7 +71,7 @@ watch(
             class="h-6 w-6"
             fill="none"
             viewBox="0 0 24 24"
-            :stroke="getCurrentTheme === 'dark' ? 'white' : 'black'"
+            :stroke="getCurrentTheme() === 'dark' ? 'white' : 'black'"
           >
             <path
               stroke-linecap="round"

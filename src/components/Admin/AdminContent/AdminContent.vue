@@ -49,7 +49,7 @@ const headers = reactive<HeadersTable[]>([
       <img
         class="cursor-pointer"
         :src="
-          getCurrentTheme === 'dark'
+          getCurrentTheme() === 'dark'
             ? require('@/assets/icons/menu-white.png')
             : require('@/assets/icons/menu-black.png')
         "
@@ -57,7 +57,7 @@ const headers = reactive<HeadersTable[]>([
         alt="menu icon"
         @click="$emit('menuClicked', props.isMenu)"
       />
-      <ThemeSwitcher :theme="getCurrentTheme" />
+      <ThemeSwitcher :theme="getCurrentTheme()" />
     </div>
     <AdminTable
       v-if="!getLoading()"

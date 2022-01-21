@@ -2,14 +2,13 @@
 import { getCurrentTheme, toggleTheme } from "@/composables/useThemeSwitcher";
 const testTheme = () => {
   toggleTheme();
-  document.location.reload();
 };
 </script>
 <template>
   <!-- Theme switcher icons -->
   <a href="#" @click.prevent="testTheme" aria-label="Theme Switcher">
     <svg
-      v-if="getCurrentTheme === 'light'"
+      v-if="getCurrentTheme() === 'light'"
       xmlns="http://www.w3.org/2000/svg"
       class="text-ternary-dark hover:text-gray-400 dark:text-ternary-light dark:hover:text-primary-light w-5"
       fill="none"

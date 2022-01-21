@@ -21,7 +21,7 @@ import ThemeSwitcher from "@/components/ThemeSwitcher/ThemeSwitcher.vue";
     </div>
     <div class="flex">
       <ThemeSwitcher
-        :theme="getCurrentTheme"
+        :theme="getCurrentTheme()"
         class="ml-8 bg-primary-light dark:bg-ternary-dark px-3 py-2 shadow-sm rounded-xl cursor-pointer"
       />
     </div>

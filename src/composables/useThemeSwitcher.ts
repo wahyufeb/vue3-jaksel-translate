@@ -10,13 +10,15 @@ export const toggleTheme = (): void => {
   }
 };
 
-export const getCurrentTheme = currentTheme.value;
+export const getCurrentTheme = (): string => currentTheme.value;
 
 const setLightTheme = () => {
   currentTheme.value = "light";
   localStorage.setItem("theme", "light");
+  document.documentElement.classList.remove("dark");
 };
 const setDarkTheme = () => {
   currentTheme.value = "dark";
   localStorage.setItem("theme", "dark");
+  document.documentElement.classList.add("dark");
 };

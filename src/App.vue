@@ -3,9 +3,9 @@ import { getCurrentTheme } from "@/composables/useThemeSwitcher";
 </script>
 
 <template>
-  <div :class="getCurrentTheme">
+  <Html :class="getCurrentTheme()">
     <router-view />
-  </div>
+  </Html>
 </template>
 
 <style>
