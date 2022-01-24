@@ -1,4 +1,4 @@
-import { reactive, ref, Ref } from "vue";
+import { reactive, ref } from "vue";
 import {
   translatingAPI,
   loadDictionariesAPI,
@@ -55,10 +55,7 @@ export const useDictionary = (): IUseDictionary => {
               return item[payloadData.payload];
             })
           : [];
-
-        return data.result
-          ? data.result[payloadData.payload === "jaksel" ? "artinya" : "jaksel"]
-          : "";
+        return data.result;
       } else {
         return "";
       }
