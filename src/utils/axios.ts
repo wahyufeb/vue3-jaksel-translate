@@ -1,10 +1,10 @@
 import axios, { AxiosInstance } from "axios";
-import { BASE_URL } from "@/config/environment";
+import { API_URL } from "@/config/environment";
 import { decryptCrypto } from "@/services/generic";
 import Cookies from "js-cookie";
 
 const AxiosInstance: AxiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: API_URL,
   timeout: 5000,
   headers: {
     "Content-Type": "application/json",

@@ -1,2 +1,2 @@
-export const BASE_URL = "http://localhost:8000/api/v1/";
-export const CRYPTO_KEY = "aiohdjasndISUBVfiuegasndoasndwbf123123412801248012";
+export const API_URL = process.env.API_URL;
+export const CRYPTO_KEY = process.env.CRYPTO_KEY;
