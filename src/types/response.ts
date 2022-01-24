@@ -15,7 +15,7 @@ export interface IResponseStatus {
 export type IResponseLogin = StandardResponse<{ user: IAdmin; token: string }>;
 
 export type IResponseTranslating = StandardResponse<{
-  result: IDictionary;
+  result: string;
   resultRecomendation: Array<IDictionary>;
 }>;
 
