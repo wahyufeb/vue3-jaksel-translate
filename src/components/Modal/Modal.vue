@@ -70,8 +70,8 @@ const props = defineProps({
             class="focus:outline-none px-4 bg-purple-700 p-3 ml-3 rounded-lg text-secondary-light hover:bg-teal-400 flex justify-center items-center"
             @click="$emit('onConfirmed')"
           >
-            <Loader v-if="isLoading" />
             {{ textSubmit }}
+            <Loader v-if="isLoading" />
           </button>
         </div>
       </div>

@@ -20,13 +20,15 @@ const handleSwitch = () => {
   to.value = temp;
 
   const tempInput = fromInput.value;
-  fromInput.value = toInput.value;
+  fromInput.value = toInput.value === "Terjemahan" ? "" : toInput.value;
   toInput.value = tempInput;
   translating();
 };
 
 const handleClickRecomendation = (word: string) => {
-  fromInput.value = word;
+  const splitWord = fromInput.value.split(" ");
+  splitWord[splitWord.length - 1] = word;
+  fromInput.value = splitWord.join(" ");
   recomendations.list = [];
 };
 
