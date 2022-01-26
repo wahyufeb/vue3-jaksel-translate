@@ -18,4 +18,5 @@ if (tokenCookie) {
   ] = `Bearer ${decryptCrypto(tokenCookie)}`;
 }
 
+export const cancelTokenSource = axios.CancelToken;
 export default AxiosInstance;

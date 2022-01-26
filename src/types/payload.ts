@@ -12,6 +12,7 @@ export interface ITranslatingPayload {
   params: {
     search: string;
   };
+  cancelToken?: any;
   payload: "jaksel" | "artinya";
 }
 

@@ -21,6 +21,7 @@ import {
   IResponseUpdateDictionary,
 } from "@/types/response";
 import { IDictionary } from "@/types/dictionary";
+import { cancelTokenSource } from "@/utils/axios";
 
 interface IUseDictionary {
   getDictionaries: () => Array<IDictionary>;
@@ -36,9 +37,11 @@ interface IUseDictionary {
   ) => Promise<IResponseStatus>;
   getLoading: () => boolean;
 }
+let cancelToken: any = null;
 
 let dictionaries = reactive<Array<IDictionary>>([]);
 const loading = ref<boolean>(false);
+
 export const useDictionary = (): IUseDictionary => {
   let translatingRecomendation = reactive<Array<string>>([]);
 
@@ -46,6 +49,12 @@ export const useDictionary = (): IUseDictionary => {
     payloadData: ITranslatingPayload
   ): Promise<string> => {
     try {
+      console.error("asdasd", cancelToken);
+      if (cancelToken) {
+        cancelToken.cancel("asd");
+      }
+      cancelToken = cancelTokenSource.source();
+      payloadData.cancelToken = cancelToken.token;
       const reqTranslating = await translatingAPI(payloadData);
       const { data }: IResponseTranslating = await reqTranslating.data;
 

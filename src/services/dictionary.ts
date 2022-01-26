@@ -10,9 +10,11 @@ import { IDictionary } from "@/types/dictionary";
 export const translatingAPI = ({
   params,
   payload,
+  cancelToken,
 }: ITranslatingPayload): Promise<AxiosResponse> => {
   return AxiosInstance.get(`dictionary/${payload}/translating`, {
     params,
+    cancelToken,
   });
 };
 
