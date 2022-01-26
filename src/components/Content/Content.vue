@@ -8,6 +8,8 @@ import debounce from "@/utils/debounce";
 const dictionary = useDictionary();
 let recomendations = reactive<{ list: Array<string> }>({ list: [] });
 
+const fromInputRef = ref<any>(null);
+
 const fromInput = ref<string>("");
 const toInput = ref<string>("Terjemahan");
 
@@ -30,9 +32,11 @@ const handleClickRecomendation = (word: string) => {
   splitWord[splitWord.length - 1] = word;
   fromInput.value = splitWord.join(" ");
   recomendations.list = [];
+  fromInputRef.value.focus();
 };
 
 const translating = async (): Promise<void> => {
+  toInput.value = "Menerjemahkan...";
   if (fromInput.value === "") {
     toInput.value = "Terjemahan";
     recomendations.list = [];
@@ -51,7 +55,7 @@ const translating = async (): Promise<void> => {
 
 watch(
   fromInput,
-  debounce(() => translating(), 500)
+  debounce(() => translating(), 1000)
 );
 </script>
 
@@ -94,6 +98,7 @@ watch(
           class="relative xs:w-full md:w-6/12 dark:bg-ternary-dark dark:text-ternary-light bg-ternary-light text-ternary-dark rounded-md text-2xl resize-none mb-2"
         >
           <textarea
+            ref="fromInputRef"
             rows="5"
             class="xs:w-full md:w-12/12 dark:bg-ternary-dark dark:text-ternary-light bg-ternary-light text-ternary-dark p-2 rounded-md text-2xl resize-none"
             v-model="fromInput"
