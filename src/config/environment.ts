@@ -1,2 +1,2 @@
-export const API_URL = process.env.API_URL;
-export const CRYPTO_KEY = process.env.CRYPTO_KEY;
+export const API_URL = process.env.VUE_APP_API_URL || "http://localhost:3001";
+export const CRYPTO_KEY = process.env.VUE_APP_CRYPTO_KEY || "secret";
