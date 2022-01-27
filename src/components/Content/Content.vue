@@ -23,8 +23,7 @@ const handleSwitch = () => {
 
   const tempInput = fromInput.value;
   fromInput.value = toInput.value === "Terjemahan" ? "" : toInput.value;
-  toInput.value = tempInput;
-  translating();
+  toInput.value = tempInput === "" ? "Terjemahan" : tempInput;
 };
 
 const handleClickRecomendation = (word: string) => {
@@ -33,6 +32,7 @@ const handleClickRecomendation = (word: string) => {
   fromInput.value = splitWord.join(" ");
   recomendations.list = [];
   fromInputRef.value.focus();
+  translating();
 };
 
 const translating = async (): Promise<void> => {
@@ -52,11 +52,6 @@ const translating = async (): Promise<void> => {
   toInput.value = await dictionary.translatingProcess(payloadData);
   recomendations.list = dictionary.getRecomendation();
 };
-
-watch(
-  fromInput,
-  debounce(() => translating(), 1000)
-);
 </script>
 
 <template>
@@ -102,6 +97,7 @@ watch(
             rows="5"
             class="xs:w-full md:w-12/12 dark:bg-ternary-dark dark:text-ternary-light bg-ternary-light text-ternary-dark p-2 rounded-md text-2xl resize-none"
             v-model="fromInput"
+            @input="translating"
           >
           </textarea>
           <div
