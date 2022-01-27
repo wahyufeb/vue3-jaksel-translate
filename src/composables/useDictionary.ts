@@ -49,7 +49,6 @@ export const useDictionary = (): IUseDictionary => {
     payloadData: ITranslatingPayload
   ): Promise<string> => {
     try {
-      console.error("asdasd", cancelToken);
       if (cancelToken) {
         cancelToken.cancel("asd");
       }
