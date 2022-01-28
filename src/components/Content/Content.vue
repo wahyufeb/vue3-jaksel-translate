@@ -55,7 +55,7 @@ const translating = async (): Promise<void> => {
 </script>
 
 <template>
-  <div class="w-screen flex justify-center items-center mt-40 p-8">
+  <div class="w-screen flex justify-center items-center p-8 xs:mt-10 md:mt-40">
     <div
       class="xs:w-full md:w-8/12 bg-white dark:bg-secondary-dark rounded-md shadow-xl"
     >

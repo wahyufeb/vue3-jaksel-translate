@@ -38,18 +38,18 @@ const toast = reactive<{
 
 const handleModalAdd = () => {
   show.value = true;
-  dictionaryModalRef.value.$.setupState._id = "";
-  dictionaryModalRef.value.$.setupState.jaksel = "";
-  dictionaryModalRef.value.$.setupState.arti = "";
-  dictionaryModalRef.value.$.setupState.modalTitle = "Tambah kosa kata";
+  dictionaryModalRef.value._id = "";
+  dictionaryModalRef.value.jaksel = "";
+  dictionaryModalRef.value.arti = "";
+  dictionaryModalRef.value.modalTitle = "Tambah kosa kata";
 };
 
 const handleModalEdit = (item: IDictionary) => {
   show.value = true;
-  dictionaryModalRef.value.$.setupState._id = item._id;
-  dictionaryModalRef.value.$.setupState.jaksel = item.jaksel;
-  dictionaryModalRef.value.$.setupState.arti = item.artinya;
-  dictionaryModalRef.value.$.setupState.modalTitle = "Update kosa kata";
+  dictionaryModalRef.value._id = item._id;
+  dictionaryModalRef.value.jaksel = item.jaksel;
+  dictionaryModalRef.value.arti = item.artinya;
+  dictionaryModalRef.value.modalTitle = "Update kosa kata";
 };
 
 const handleDelete = async (item: IDictionary) => {

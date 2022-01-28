@@ -1,5 +1,12 @@
 <script setup lang="ts">
-import { ref, reactive, defineProps, defineEmits, PropType } from "vue";
+import {
+  ref,
+  reactive,
+  defineProps,
+  defineEmits,
+  PropType,
+  defineExpose,
+} from "vue";
 import Modal from "@/components/Modal/Modal.vue";
 import { useDictionary } from "@/composables/useDictionary";
 import {
@@ -87,6 +94,13 @@ const handleUpdateProcess = async () => {
     message,
   };
 };
+
+defineExpose({
+  _id,
+  jaksel,
+  arti,
+  modalTitle,
+});
 </script>
 
 <template>
