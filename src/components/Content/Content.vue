@@ -50,6 +50,7 @@ const translating = async (): Promise<void> => {
     payload: from.value,
   };
   toInput.value = await dictionary.translatingProcess(payloadData);
+  toInput.value = toInput.value.replace("_", " ");
   recomendations.list = dictionary.getRecomendation();
 };
 </script>
@@ -121,6 +122,12 @@ const translating = async (): Promise<void> => {
           :disabled="true"
         >
         </textarea>
+      </div>
+      <div
+        class="px-6 -mt-2 mb-4 text-red-600 dark:text-red-400 text-sm font-light"
+      >
+        *Gunakan tanda "&nbsp;<strong>_</strong>&nbsp;" untuk menyambungkan kata
+        yang memiliki 1 arti. contoh : <strong>which_is</strong>
       </div>
     </div>
   </div>
