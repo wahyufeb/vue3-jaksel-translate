@@ -50,7 +50,10 @@ const translating = async (): Promise<void> => {
     payload: from.value,
   };
   toInput.value = await dictionary.translatingProcess(payloadData);
-  toInput.value = toInput.value.replace("_", " ");
+  toInput.value = toInput.value
+    .split("")
+    .map((char) => char.replace("_", " "))
+    .join("");
   recomendations.list = dictionary.getRecomendation();
 };
 </script>
